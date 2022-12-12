@@ -1,6 +1,6 @@
 version: '2'
 services:
-  secrets:
+  sms-gateway:
     build: .
     container_name: sms-gateway
     #hostname: secrets
@@ -10,4 +10,25 @@ services:
       - "8080:8080"
     environment:
       - SERVER_PORT=8080
+
+  postgres:
+    container_name: sms_gateway_postgres_db
+    image: postgres:13-alpine
+    networks:
+      - sms-gateway-backend
+    environment:
+      POSTGRES_USER: "postgres_user"
+      POSTGRES_PASSWORD: "postgres_pass"
+    volumes:
+      - sms_gateway_postgres_db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  sms_gateway_postgres_db:
 
