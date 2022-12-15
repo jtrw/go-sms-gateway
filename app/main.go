@@ -7,6 +7,8 @@ import (
    "github.com/go-chi/chi/v5/middleware"
    "github.com/jessevdk/go-flags"
    "github.com/jtrw/go-rest"
+
+   server "sms-gateway/app/server"
 )
 
 type Server struct {
@@ -29,7 +31,7 @@ func main() {
         log.Fatal(err)
     }
 
-    srv := Server {
+    srv := server.Server {
         PinSize:   1,
         WebRoot:   "/",
         Version:   "1.0",
@@ -39,28 +41,6 @@ func main() {
     if err := srv.Run(); err != nil {
         log.Printf("[ERROR] failed, %+v", err)
     }
-}
-
-func (s Server) Run() error {
-    log.Printf("[INFO] Activate rest server")
-    log.Printf("[INFO] Port: %s", s.Port)
-
-	if err := http.ListenAndServe(":"+s.Port, s.routes()); err != http.ErrServerClosed {
-		return errors.Wrap(err, "server failed")
-	}
-
-	return nil
-}
-
-func (s Server) routes() chi.Router {
-	router := chi.NewRouter()
-
-    router.Use(middleware.Logger)
-    router.Use(rest.Ping)
-    router.Route("/", func(r chi.Router) {
-    })
-
-	return router
 }
 
 
