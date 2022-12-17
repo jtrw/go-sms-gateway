@@ -6,9 +6,17 @@ import (
    "github.com/pkg/errors"
    "github.com/go-chi/chi/v5"
    "github.com/go-chi/chi/v5/middleware"
-   "github.com/jessevdk/go-flags"
    "github.com/jtrw/go-rest"
 )
+
+type Server struct {
+    Host           string
+    Port           string
+	PinSize        int
+	MaxPinAttempts int
+	WebRoot        string
+	Version        string
+}
 
 func (s Server) Run() error {
     log.Printf("[INFO] Activate rest server")

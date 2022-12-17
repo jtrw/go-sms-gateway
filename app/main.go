@@ -1,12 +1,10 @@
 package main
 import (
   "log"
-   "net/http"
-   "github.com/pkg/errors"
-   "github.com/go-chi/chi/v5"
-   "github.com/go-chi/chi/v5/middleware"
+    "fmt"
+    "os"
+   //"github.com/pkg/errors"
    "github.com/jessevdk/go-flags"
-   "github.com/jtrw/go-rest"
    "gopkg.in/yaml.v3"
    server "sms-gateway/app/server"
 )
@@ -22,6 +20,9 @@ type Server struct {
 type Options struct {
     Port string `short:"p" long:"port" env:"SERVER_PORT" default:"8080" description:"Port web server"`
     Config string `short:"f" long:"file" env:"CONF" description:"config file"`
+}
+
+type Config struct {
 }
 
 func main() {
@@ -47,6 +48,20 @@ func main() {
     if err := srv.Run(); err != nil {
         log.Printf("[ERROR] failed, %+v", err)
     }
+}
+
+func LoadConfig(file string) (*Config, error) {
+	fh, err := os.Open(file) //nolint
+	if err != nil {
+		return nil, fmt.Errorf("can't load config file %s: %w", file, err)
+	}
+	defer fh.Close() //nolint
+
+	res := Config{}
+	if err := yaml.NewDecoder(fh).Decode(&res); err != nil {
+		return nil, fmt.Errorf("can't parse config: %w", err)
+	}
+	return &res, nil
 }
 
 
