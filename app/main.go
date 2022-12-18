@@ -23,6 +23,11 @@ type Options struct {
 }
 
 type Config struct {
+    Gateway struct {
+         Server string `yaml:"server"`
+         Login string `yaml:"login"`
+         Password string `yaml:"password"`
+    } `yaml:"gateway"`
 }
 
 func main() {
@@ -37,6 +42,7 @@ func main() {
     if errYaml != nil {
         log.Println(errYaml)
     }
+    fmt.Println(config)
 
     srv := server.Server {
         PinSize:   1,
