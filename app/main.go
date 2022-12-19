@@ -7,6 +7,7 @@ import (
    "github.com/jessevdk/go-flags"
    "gopkg.in/yaml.v3"
    server "sms-gateway/app/server"
+   jstore "sms-gateway/app/store"
 )
 
 type Server struct {
@@ -20,6 +21,7 @@ type Server struct {
 type Options struct {
     Port string `short:"p" long:"port" env:"SERVER_PORT" default:"8080" description:"Port web server"`
     Config string `short:"f" long:"file" env:"CONF" description:"config file"`
+    StoragePath string `short:"s" long:"storage_path" default:"/var/tmp/jtrw_sms_gateway.db" description:"Storage Path"`
 }
 
 type Config struct {
@@ -37,6 +39,12 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
+
+    store := jstore.Store {
+        StorePath: opts.StoragePath,
+    }
+
+    store.JBolt = store.NewStore()
 
     config, errYaml := LoadConfig(opts.Config)
     if errYaml != nil {

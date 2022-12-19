@@ -3,7 +3,7 @@ package store
 import (
   "time"
   "encoding/json"
-  jbolt "manager-secrets/backend/app/store/jbolt"
+  jbolt "sms-gateway/app/store/jbolt"
 )
 
 const TOKEN_KEY = "jtrw/sms-gateway"
