@@ -77,7 +77,9 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
-
+     render.Status(r, http.StatusCreated)
+     render.JSON(w, r, JSON{"status": "ok"})
+     return
 }
 
 func isContentTypeJson(r *http.Request) bool {
