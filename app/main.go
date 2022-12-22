@@ -20,7 +20,7 @@ type Server struct {
 
 type Options struct {
     Port string `short:"p" long:"port" env:"SERVER_PORT" default:"8080" description:"Port web server"`
-    Config string `short:"f" long:"file" env:"CONF" description:"config file"`
+    Config string `short:"f" long:"file" env:"CONF" description:"config file" default:"configs.yaml"`
     StoragePath string `short:"s" long:"storage_path" default:"/var/tmp/jtrw_sms_gateway.db" description:"Storage Path"`
 }
 
@@ -57,6 +57,7 @@ func main() {
         WebRoot:   "/",
         Version:   "1.0",
         Port: opts.Port,
+        Config: config,
     }
 
     if err := srv.Run(); err != nil {

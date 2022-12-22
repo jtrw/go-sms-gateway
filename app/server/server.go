@@ -23,6 +23,10 @@ type Server struct {
 	MaxPinAttempts int
 	WebRoot        string
 	Version        string
+	Config         Config
+}
+
+type Config interface {
 }
 
 func (s Server) Run() error {
