@@ -58,6 +58,7 @@ func main() {
         Version:   "1.0",
         Port: opts.Port,
         Config: config,
+        Store: store,
     }
 
     if err := srv.Run(); err != nil {

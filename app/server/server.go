@@ -24,10 +24,17 @@ type Server struct {
 	WebRoot        string
 	Version        string
 	Config         Config
+	Store          Store
 }
 
 type Config interface {
 }
+
+type Store interface {
+    Get(bucket, key string) string
+    Set(bucket, key, value string)
+}
+
 
 func (s Server) Run() error {
     log.Printf("[INFO] Activate rest server")
@@ -81,6 +88,9 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
+     s.Store.Set("TEST_BUCK", "test", "test message")
+     res := s.Store.Get("TEST_BUCK", "test")
+     lgr.Printf(res)
      render.Status(r, http.StatusCreated)
      render.JSON(w, r, JSON{"status": "ok"})
      return
