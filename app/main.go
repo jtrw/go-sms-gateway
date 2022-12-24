@@ -80,6 +80,10 @@ func LoadConfig(file string) (*Config, error) {
 	return &res, nil
 }
 
+func (c Config) GetGatewayServer() string {
+    return c.Gateway.Server
+}
+
 
 
 
