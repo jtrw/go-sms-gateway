@@ -28,7 +28,9 @@ type Server struct {
 }
 
 type Config interface {
-    GetGatewayServer() string
+    GetServer() string
+    GetLogin() string
+    GetPassword() string
 }
 
 type Store interface {
@@ -91,7 +93,7 @@ func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
      //s.Store.Set("TEST_BUCK", "test", "test message")
      //res := s.Store.Get("TEST_BUCK", "test")
      //lgr.Printf(res)
-     lgr.Printf(s.Config.GetGatewayServer())
+     lgr.Printf(s.Config.GetServer())
      render.Status(r, http.StatusCreated)
      render.JSON(w, r, JSON{"status": "ok"})
      return

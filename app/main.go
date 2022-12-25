@@ -80,8 +80,16 @@ func LoadConfig(file string) (*Config, error) {
 	return &res, nil
 }
 
-func (c Config) GetGatewayServer() string {
+func (c Config) GetServer() string {
     return c.Gateway.Server
+}
+
+func (c Config) GetLogin() string {
+    return c.Gateway.Login
+}
+
+func (c Config) GetPassword() string {
+    return c.Gateway.Password
 }
 
 
