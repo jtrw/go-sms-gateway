@@ -94,6 +94,8 @@ func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
      //res := s.Store.Get("TEST_BUCK", "test")
      //lgr.Printf(res)
      lgr.Printf(s.Config.GetServer())
+     lgr.Printf(s.Config.GetLogin())
+     lgr.Printf(s.Config.GetPassword())
      render.Status(r, http.StatusCreated)
      render.JSON(w, r, JSON{"status": "ok"})
      return
