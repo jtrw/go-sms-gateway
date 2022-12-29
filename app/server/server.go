@@ -31,6 +31,7 @@ type Config interface {
     GetServer() string
     GetLogin() string
     GetPassword() string
+    GetCheckStatusUrl() string
 }
 
 type Store interface {
@@ -96,6 +97,19 @@ func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
      lgr.Printf(s.Config.GetServer())
      lgr.Printf(s.Config.GetLogin())
      lgr.Printf(s.Config.GetPassword())
+     checkStatusUrl := s.Config.GetCheckStatusUrl()
+     resp, err := http.Get(checkStatusUrl)
+     if err != nil {
+        log.Fatalln(err)
+     }
+
+      body, err := ioutil.ReadAll(resp.Body)
+      if err != nil {
+        log.Fatalln(err)
+     }
+
+     output.Print(body)
+
      render.Status(r, http.StatusCreated)
      render.JSON(w, r, JSON{"status": "ok"})
      return

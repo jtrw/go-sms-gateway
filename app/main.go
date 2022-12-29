@@ -29,6 +29,7 @@ type Config struct {
          Server string `yaml:"server"`
          Login string `yaml:"login"`
          Password string `yaml:"password"`
+         CheckStatus string `yaml:"check_status"`
     } `yaml:"gateway"`
 }
 
@@ -92,6 +93,9 @@ func (c Config) GetPassword() string {
     return c.Gateway.Password
 }
 
+func (c Config) GetCheckStatusUrl() string {
+    return c.Gateway.Server + c.Gateway.CheckStatus
+}
 
 
 
