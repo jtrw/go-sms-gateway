@@ -2,3 +2,5 @@ gateway:
   server: 127.0.0.1
   login: admin
   password: pass
+  check_status: /default/en_US/send_status.xml
+  send_sms: /default/en_US/send.html
