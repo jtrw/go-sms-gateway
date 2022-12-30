@@ -32,6 +32,7 @@ type Config interface {
     GetLogin() string
     GetPassword() string
     GetCheckStatusUrl() string
+    GetSendSmsUrl() string
 }
 
 type Store interface {
