@@ -2,6 +2,7 @@ package server
 
 import (
     "io"
+    "io/ioutil"
     "log"
    "net/http"
    "strings"
@@ -73,6 +74,18 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
     value := string(b)
     lgr.Printf("[INFO] %s", value)
 
+
+     checkStatusUrl := s.Config.GetSendSmsUrl()
+     resp, err := http.Post(checkStatusUrl)
+     if err != nil {
+        log.Fatalln(err)
+     }
+
+      body, err := ioutil.ReadAll(resp.Body)
+      if err != nil {
+        log.Fatalln(err)
+      }
+
     //uri := chi.URLParam(r, "*")
 
     dataJson := &JSON{}
@@ -92,12 +105,6 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
-     //s.Store.Set("TEST_BUCK", "test", "test message")
-     //res := s.Store.Get("TEST_BUCK", "test")
-     //lgr.Printf(res)
-     lgr.Printf(s.Config.GetServer())
-     lgr.Printf(s.Config.GetLogin())
-     lgr.Printf(s.Config.GetPassword())
      checkStatusUrl := s.Config.GetCheckStatusUrl()
      resp, err := http.Get(checkStatusUrl)
      if err != nil {
