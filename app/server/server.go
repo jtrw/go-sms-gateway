@@ -76,7 +76,7 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
 
 
      checkStatusUrl := s.Config.GetSendSmsUrl()
-     resp, err := http.Post(checkStatusUrl)
+     resp, err := http.Post(checkStatusUrl, "application/json", nil)
      if err != nil {
         log.Fatalln(err)
      }
@@ -86,6 +86,7 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
         log.Fatalln(err)
       }
 
+     lgr.Printf(string(body))
     //uri := chi.URLParam(r, "*")
 
     dataJson := &JSON{}
@@ -116,7 +117,7 @@ func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
         log.Fatalln(err)
      }
 
-     output.Print(body)
+     lgr.Printf(string(body))
 
      render.Status(r, http.StatusCreated)
      render.JSON(w, r, JSON{"status": "ok"})
