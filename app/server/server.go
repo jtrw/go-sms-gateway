@@ -74,19 +74,28 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
     value := string(b)
     lgr.Printf("[INFO] %s", value)
 
+    lastSlot := s.Store.Get("SLOTS", "last_slot")
 
-     checkStatusUrl := s.Config.GetSendSmsUrl()
-     resp, err := http.Post(checkStatusUrl, "application/json", nil)
-     if err != nil {
-        log.Fatalln(err)
-     }
+    params := {
+            "u": c.Config.GetLogin(),
+            "p": c.Config.GetPassword(),
+            "l": lastSlot,
+            "n": value,
+            "m": "text"
+    }
 
-      body, err := ioutil.ReadAll(resp.Body)
-      if err != nil {
-        log.Fatalln(err)
-      }
+    checkStatusUrl := s.Config.GetSendSmsUrl()
+    resp, err := http.Post(checkStatusUrl, "application/json", nil)
+    if err != nil {
+    log.Fatalln(err)
+    }
 
-     lgr.Printf(string(body))
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+    log.Fatalln(err)
+    }
+
+    lgr.Printf(string(body))
     //uri := chi.URLParam(r, "*")
 
     dataJson := &JSON{}
