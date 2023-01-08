@@ -76,13 +76,12 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
 
     lastSlot := s.Store.Get("SLOTS", "last_slot")
 
-    params := {
-            "u": c.Config.GetLogin(),
-            "p": c.Config.GetPassword(),
-            "l": lastSlot,
-            "n": value,
-            "m": "text"
-    }
+    params := make(map[string]string)
+    params["u"] = s.Config.GetLogin()
+    params["p"] = s.Config.GetPassword()
+    params["l"] = lastSlot
+    params["n"] = value
+    params["n"] = "text"
 
     checkStatusUrl := s.Config.GetSendSmsUrl()
     resp, err := http.Post(checkStatusUrl, "application/json", nil)
