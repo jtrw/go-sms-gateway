@@ -74,7 +74,7 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
     value := string(b)
     lgr.Printf("[INFO] %s", value)
 
-    lastSlot := s.Store.Get("SLOTS", "last_slot")
+    lastSlot := getActiveSlot(s.Store)
 
     params := make(map[string]string)
     params["u"] = s.Config.GetLogin()
@@ -86,7 +86,7 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
     checkStatusUrl := s.Config.GetSendSmsUrl()
     resp, err := http.Post(checkStatusUrl, "application/json", nil)
     if err != nil {
-    log.Fatalln(err)
+        log.Fatalln(err)
     }
 
     body, err := ioutil.ReadAll(resp.Body)
@@ -111,6 +111,10 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
     render.Status(r, http.StatusCreated)
     render.JSON(w, r, JSON{"status": "ok"})
     return
+}
+
+func getActiveSlot(store Store) string {
+    return store.Get("SLOTS", "last_slot")
 }
 
 func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
