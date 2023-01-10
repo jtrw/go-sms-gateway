@@ -31,6 +31,7 @@ type Config struct {
          Password string `yaml:"password"`
          CheckStatus string `yaml:"check_status"`
          SendSmsUrl string `yaml:"send_sms"`
+         ActiveSlots []int `yaml:"active_slots"`
     } `yaml:"gateway"`
 }
 
@@ -100,6 +101,10 @@ func (c Config) GetCheckStatusUrl() string {
 
 func (c Config) GetSendSmsUrl() string {
     return c.Gateway.Server + c.Gateway.SendSmsUrl
+}
+
+func (c Config) GetActiveSlots() []int {
+    return c.Gateway.ActiveSlots
 }
 
 

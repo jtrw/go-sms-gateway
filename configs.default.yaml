@@ -4,3 +4,4 @@ gateway:
   password: pass
   check_status: /default/en_US/send_status.xml
   send_sms: /default/en_US/send.html
+  active_slots: [1,1,1,1,1,1,1,1]
