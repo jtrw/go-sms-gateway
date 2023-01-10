@@ -34,6 +34,7 @@ type Config interface {
     GetPassword() string
     GetCheckStatusUrl() string
     GetSendSmsUrl() string
+    GetActiveSlots() []int
 }
 
 type Store interface {
