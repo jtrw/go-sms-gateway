@@ -13,6 +13,7 @@ import (
    "github.com/jtrw/go-rest"
    lgr "github.com/go-pkgz/lgr"
    "encoding/json"
+   "strconv"
 )
 
 type JSON map[string]interface{}
@@ -75,7 +76,7 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
     value := string(b)
     lgr.Printf("[INFO] %s", value)
 
-    lastSlot := getActiveSlot(s.Store)
+    lastSlot := getActiveSlot(s)
 
     params := make(map[string]string)
     params["u"] = s.Config.GetLogin()
@@ -114,8 +115,19 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
     return
 }
 
-func getActiveSlot(store Store) string {
-    return store.Get("SLOTS", "last_slot")
+func getActiveSlot(s Server) string {
+    lastSlot, _ := strconv.ParseInt(s.Store.Get("SLOTS", "last_slot"), 10, 0)
+    activeSlots := s.Config.GetActiveSlots()
+
+    lenSlots := len(activeSlots)
+
+    if activeSlots[lastSlot + 1] == 1 {
+    }
+
+    for _, slot := range activeSlots {
+           lgr.Printf("%s\n", slot)
+    }
+    return s.Store.Get("SLOTS", "last_slot")
 }
 
 func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
