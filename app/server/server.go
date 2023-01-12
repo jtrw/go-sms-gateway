@@ -121,7 +121,14 @@ func getActiveSlot(s Server) string {
 
     lenSlots := len(activeSlots)
 
+    var currentSlot int
+
+    if lastSlot >= lenSlots {
+        currentSlot = 0
+    }
+
     if activeSlots[lastSlot + 1] == 1 {
+        currentSlot = lastSlot + 1
     }
 
     for _, slot := range activeSlots {
