@@ -119,22 +119,22 @@ func getActiveSlot(s Server) string {
     lastSlot, _ := strconv.ParseInt(s.Store.Get("SLOTS", "last_slot"), 10, 0)
     activeSlots := s.Config.GetActiveSlots()
 
-    lenSlots := len(activeSlots)
+    //lenSlots := len(activeSlots)
 
     var currentSlot int
 
-    if lastSlot >= lenSlots {
+    if activeSlots[lastSlot + 1] == 1 {
+        currentSlot = int(lastSlot) + 1
+    } else {
         currentSlot = 0
     }
-
-    if activeSlots[lastSlot + 1] == 1 {
-        currentSlot = lastSlot + 1
-    }
+    currentSlotStr := strconv.Itoa(currentSlot)
+    s.Store.Set("SLOTS", "last_slot", currentSlotStr)
 
     for _, slot := range activeSlots {
            lgr.Printf("%s\n", slot)
     }
-    return s.Store.Get("SLOTS", "last_slot")
+    return currentSlotStr
 }
 
 func (s Server) checkStatus(w http.ResponseWriter, r *http.Request) {
