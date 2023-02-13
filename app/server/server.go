@@ -16,6 +16,9 @@ import (
    "strconv"
 )
 
+const BUCKET_SLOTS = "SLOTS"
+const KEY_LAST_SLOT = "last_slot"
+
 type JSON map[string]interface{}
 
 type Server struct {
@@ -116,7 +119,7 @@ func (s Server) sendSms(w http.ResponseWriter, r *http.Request) {
 }
 
 func getActiveSlot(s Server) string {
-    lastSlot, _ := strconv.ParseInt(s.Store.Get("SLOTS", "last_slot"), 10, 0)
+    lastSlot, _ := strconv.ParseInt(s.Store.Get(BUCKET_SLOTS, KEY_LAST_SLOT), 10, 0)
     activeSlots := s.Config.GetActiveSlots()
 
     //lenSlots := len(activeSlots)
@@ -129,7 +132,7 @@ func getActiveSlot(s Server) string {
         currentSlot = 0
     }
     currentSlotStr := strconv.Itoa(currentSlot)
-    s.Store.Set("SLOTS", "last_slot", currentSlotStr)
+    s.Store.Set(BUCKET_SLOTS, KEY_LAST_SLOT, currentSlotStr)
 
     for _, slot := range activeSlots {
            lgr.Printf("%s\n", slot)
